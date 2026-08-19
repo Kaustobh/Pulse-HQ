@@ -9,6 +9,12 @@
 
 **PulseHQ** is an AI-synthesized team management platform built to help engineering managers monitor real-time utilization, predict delivery risks, balance sprint workloads, and analyze team productivity trends through intuitive dark glassmorphic dashboards.
 
+### 📸 Visual Previews
+
+| Splash Screen | Home Dashboard | Analytics & Reports |
+| :---: | :---: | :---: |
+| <img src="public/preview/splash.png" width="240" alt="Splash Screen" /> | <img src="public/preview/dashboard.png" width="240" alt="Dashboard Screen" /> | <img src="public/preview/analytics.png" width="240" alt="Analytics Screen" /> |
+
 ---
 
 ## 🌟 Key Features & Highlights
