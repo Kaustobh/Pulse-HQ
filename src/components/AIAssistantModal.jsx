@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, X, Send, Bot, User } from 'lucide-react';
+import { apiService } from '../services/apiService';
 
 export default function AIAssistantModal({ initialPrompt, onClose }) {
   const [messages, setMessages] = useState([
@@ -30,13 +31,7 @@ export default function AIAssistantModal({ initialPrompt, onClose }) {
     setLoading(true);
 
     try {
-      const res = await fetch('/api/ai/ask', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: textToSend })
-      });
-      const data = await res.json();
-
+      const data = await apiService.askAI(textToSend);
       setMessages(prev => [
         ...prev,
         {

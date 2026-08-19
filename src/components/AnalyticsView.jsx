@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowUpRight, TrendingUp, Filter } from 'lucide-react';
+import { apiService } from '../services/apiService';
 
 export default function AnalyticsView({ onOpenAIModal }) {
   const [period, setPeriod] = useState('3D');
@@ -12,13 +13,8 @@ export default function AnalyticsView({ onOpenAIModal }) {
   }, [period]);
 
   const fetchAnalytics = async (selectedPeriod) => {
-    try {
-      const res = await fetch(`/api/analytics?period=${selectedPeriod}`);
-      const data = await res.json();
-      setAnalyticsData(data);
-    } catch (err) {
-      console.error("Failed to load analytics", err);
-    }
+    const data = await apiService.getAnalytics(selectedPeriod);
+    setAnalyticsData(data);
   };
 
   if (!analyticsData) return <div style={{ color: '#94A3B8', padding: 20, textAlign: 'center' }}>Loading cyan analytics...</div>;

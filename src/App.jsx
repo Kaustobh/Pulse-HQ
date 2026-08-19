@@ -8,79 +8,52 @@ import AnalyticsView from './components/AnalyticsView';
 import MeetingView from './components/MeetingView';
 import AIAssistantModal from './components/AIAssistantModal';
 import ActionPlanModal from './components/ActionPlanModal';
+import { apiService } from './services/apiService';
 
 export default function App() {
   const [showSplash, setShowSplash] = useState(true);
   const [activeTab, setActiveTab] = useState('home'); // 'analytics' | 'home' | 'team'
   const [isDesktopMode, setIsDesktopMode] = useState(false);
 
-  // Backend Data State
+  // Backend / Service Data State
   const [dashboardData, setDashboardData] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [aiModalPrompt, setAiModalPrompt] = useState(null);
   const [showAiModal, setShowAiModal] = useState(false);
   const [showActionPlan, setShowActionPlan] = useState(false);
 
-  // Load Dashboard Data from Express Server API
+  // Load Dashboard Data
   useEffect(() => {
     fetchDashboardData();
   }, []);
 
   const fetchDashboardData = async () => {
-    try {
-      const res = await fetch('/api/dashboard');
-      const data = await res.json();
-      setDashboardData(data);
-    } catch (err) {
-      console.error("Error fetching dashboard data:", err);
-    }
+    const data = await apiService.getDashboard();
+    setDashboardData(data);
   };
 
   // Workload Rebalancing API Trigger
   const handleRebalance = async () => {
-    try {
-      const res = await fetch('/api/workload/rebalance', { method: 'POST' });
-      const result = await res.json();
-      setDashboardData(result.dashboard);
-    } catch (err) {
-      console.error("Failed to rebalance workload:", err);
-    }
+    const updatedDashboard = await apiService.rebalanceWorkload();
+    setDashboardData({ ...updatedDashboard });
   };
 
   // Toggle Priority Task Completion
   const handleToggleTask = async (id) => {
-    try {
-      const res = await fetch('/api/tasks/toggle', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id })
-      });
-      const result = await res.json();
-      setDashboardData(prev => ({
-        ...prev,
-        priorityQueue: result.priorityQueue
-      }));
-    } catch (err) {
-      console.error("Failed to toggle task:", err);
-    }
+    const updatedQueue = await apiService.toggleTask(id);
+    setDashboardData(prev => ({
+      ...prev,
+      priorityQueue: updatedQueue
+    }));
   };
 
   // Add Priority Task
   const handleAddTask = async (title) => {
-    try {
-      const res = await fetch('/api/tasks/add', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, type: 'New objective', tag: 'warning' })
-      });
-      const result = await res.json();
-      setDashboardData(prev => ({
-        ...prev,
-        priorityQueue: result.priorityQueue
-      }));
-    } catch (err) {
-      console.error("Failed to add task:", err);
-    }
+    const updatedQueue = await apiService.addTask(title);
+    setDashboardData(prev => ({
+      ...prev,
+      priorityQueue: updatedQueue
+    }));
   };
 
   const handleOpenAIModal = (promptText = null) => {
