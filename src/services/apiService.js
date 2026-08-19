@@ -1,5 +1,8 @@
 // Client-side Fallback & Mock API Engine for GitHub Pages Static Hosting
 
+const isLocal = typeof window !== 'undefined' && 
+  (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+
 let dashboardState = {
   managerBrief: {
     time: "AI-generated 2m ago",
@@ -116,25 +119,25 @@ const analyticsDatasets = {
 // Unified API Service Handler
 export const apiService = {
   async getDashboard() {
-    try {
-      const res = await fetch('/api/dashboard');
-      if (res.ok) return await res.json();
-    } catch (e) {
-      // Fallback for GitHub Pages static environment
+    if (isLocal) {
+      try {
+        const res = await fetch('/api/dashboard');
+        if (res.ok) return await res.json();
+      } catch (e) {}
     }
     return dashboardState;
   },
 
   async rebalanceWorkload() {
-    try {
-      const res = await fetch('/api/workload/rebalance', { method: 'POST' });
-      if (res.ok) {
-        const data = await res.json();
-        dashboardState = data.dashboard;
-        return dashboardState;
-      }
-    } catch (e) {
-      // Fallback
+    if (isLocal) {
+      try {
+        const res = await fetch('/api/workload/rebalance', { method: 'POST' });
+        if (res.ok) {
+          const data = await res.json();
+          dashboardState = data.dashboard;
+          return dashboardState;
+        }
+      } catch (e) {}
     }
 
     if (!dashboardState.rebalanced) {
@@ -162,18 +165,18 @@ export const apiService = {
   },
 
   async toggleTask(id) {
-    try {
-      const res = await fetch('/api/tasks/toggle', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id })
-      });
-      if (res.ok) {
-        const data = await res.json();
-        return data.priorityQueue;
-      }
-    } catch (e) {
-      // Fallback
+    if (isLocal) {
+      try {
+        const res = await fetch('/api/tasks/toggle', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id })
+        });
+        if (res.ok) {
+          const data = await res.json();
+          return data.priorityQueue;
+        }
+      } catch (e) {}
     }
 
     const task = dashboardState.priorityQueue.find(t => t.id === id);
@@ -182,18 +185,18 @@ export const apiService = {
   },
 
   async addTask(title) {
-    try {
-      const res = await fetch('/api/tasks/add', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, type: 'New objective', tag: 'warning' })
-      });
-      if (res.ok) {
-        const data = await res.json();
-        return data.priorityQueue;
-      }
-    } catch (e) {
-      // Fallback
+    if (isLocal) {
+      try {
+        const res = await fetch('/api/tasks/add', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ title, type: 'New objective', tag: 'warning' })
+        });
+        if (res.ok) {
+          const data = await res.json();
+          return data.priorityQueue;
+        }
+      } catch (e) {}
     }
 
     const newTask = {
@@ -208,25 +211,25 @@ export const apiService = {
   },
 
   async getAnalytics(period = "3D") {
-    try {
-      const res = await fetch(`/api/analytics?period=${period}`);
-      if (res.ok) return await res.json();
-    } catch (e) {
-      // Fallback
+    if (isLocal) {
+      try {
+        const res = await fetch(`/api/analytics?period=${period}`);
+        if (res.ok) return await res.json();
+      } catch (e) {}
     }
     return analyticsDatasets[period] || analyticsDatasets["3D"];
   },
 
   async askAI(query) {
-    try {
-      const res = await fetch('/api/ai/ask', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query })
-      });
-      if (res.ok) return await res.json();
-    } catch (e) {
-      // Fallback
+    if (isLocal) {
+      try {
+        const res = await fetch('/api/ai/ask', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ query })
+        });
+        if (res.ok) return await res.json();
+      } catch (e) {}
     }
 
     const q = (query || "").toLowerCase();
