@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Users, Calendar, Plus, Layers, FileText, Palette, X, Check } from 'lucide-react';
+import { Users, Calendar, Plus, Layers, FileText, Palette, X, Check, Sparkles } from 'lucide-react';
+import LiquidMetalShader from './LiquidMetalShader';
 
 export default function MeetingView({ onOpenAIModal }) {
   const [activeModal, setActiveModal] = useState(null); // 'wireframes' | 'assumptions' | 'icon' | 'member'
@@ -142,21 +143,30 @@ export default function MeetingView({ onOpenAIModal }) {
         </div>
       </div>
 
-      {/* Team Member Management Directory */}
-      <div className="glass-card" style={{ borderColor: 'rgba(217, 70, 239, 0.3)' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
-          <div>
-            <h3 className="section-title" style={{ color: '#D946EF' }}>Team Directory</h3>
-            <p className="section-subtitle">Manage squad members and sync schedules</p>
-          </div>
-          <button 
-            className="purple-btn"
-            style={{ padding: '8px 14px', fontSize: 12 }}
-            onClick={() => setActiveModal('member')}
-          >
-            <Plus size={14} /> Add Member
-          </button>
+      {/* Team Member Management Directory with Liquid Metal WebGL Living Background */}
+      <div className="glass-card" style={{ borderColor: 'rgba(217, 70, 239, 0.3)', position: 'relative', overflow: 'hidden' }}>
+        {/* Full-Bleed Animated WebGL Liquid Metal Background Shader */}
+        <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', opacity: 0.28, zIndex: 0, pointerEvents: 'auto' }}>
+          <LiquidMetalShader />
         </div>
+
+        <div style={{ position: 'relative', zIndex: 1 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
+            <div>
+              <h3 className="section-title" style={{ color: '#D946EF', display: 'flex', alignItems: 'center', gap: 6 }}>
+                Team Directory
+                <Sparkles size={14} color="#D946EF" />
+              </h3>
+              <p className="section-subtitle">Manage squad members and sync schedules</p>
+            </div>
+            <button 
+              className="purple-btn"
+              style={{ padding: '8px 14px', fontSize: 12 }}
+              onClick={() => setActiveModal('member')}
+            >
+              <Plus size={14} /> Add Member
+            </button>
+          </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           {teamMembers.map(m => (
@@ -215,6 +225,7 @@ export default function MeetingView({ onOpenAIModal }) {
               </button>
             </div>
           ))}
+        </div>
         </div>
       </div>
 
