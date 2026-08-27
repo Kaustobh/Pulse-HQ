@@ -17,6 +17,15 @@
 
 ---
 
+## 📑 UX Case Study & Recruiter Layer
+
+- 📖 **[Design Journey Case Study](./DESIGN_JOURNEY.md)** — Narrative story covering problem statement, visual identity, atomic components, MVP trade-offs, and deployment.
+- ⚡ **[Recruiter Index](./case-studies/recruiter-index.md)** — 60-second executive overview and 5-minute deep-dive map for hiring managers.
+- 🎨 **[Component Library & Design Tokens](./case-studies/pulse-hq/component-library/00-component-library-overview.md)** — Design tokens, component inventory, states, and accessibility rules.
+- 📂 **[Full Documentation Layer](./case-studies/README.md)** — Modular case study breakdown files (`00` through `12`).
+
+---
+
 ## 🌟 Key Features & Highlights
 
 - **Manager Brief & Risk Alerts**: Real-time AI status summary, action plan modal, and risk cluster indicators.
@@ -35,7 +44,7 @@
 
 - **Frontend**: React 19, Vite, Framer Motion, Lucide Icons, Plus Jakarta Sans
 - **Styling**: Vanilla CSS with HSL/HEX design tokens, dark glassmorphism (`#0A0E17`), Cyan Neon (`#00F2FE`), and Purple Neon (`#D946EF`)
-- **Backend API**: Node.js & Express REST server
+- **Backend API**: Node.js & Express REST server + Hybrid Client Edge Fallback Engine (`apiService.js`)
 - **Dev Tools & Deployment**: Concurrently, GitHub Actions, GitHub Pages
 
 ---
@@ -80,7 +89,27 @@ Pulse-HQ/
 ├── .github/
 │   └── workflows/
 │       └── deploy.yml          # GitHub Actions deployment pipeline
+├── case-studies/               # Separate Case Study & UX Documentation Layer
+│   ├── README.md
+│   ├── recruiter-index.md
+│   └── pulse-hq/
+│       ├── 00-overview.md
+│       ├── 01-problem-context.md
+│       ├── 02-role-ownership.md
+│       ├── 03-research-evidence.md
+│       ├── 04-key-insight.md
+│       ├── 05-decisions-tradeoffs.md
+│       ├── 06-solution.md
+│       ├── 07-outcomes.md
+│       ├── 08-reflection.md
+│       ├── 09-recruiter-summary.md
+│       ├── 10-assets-checklist.md
+│       ├── 11-proof-log.md
+│       ├── 12-project-links.md
+│       ├── component-library/  # Design Tokens, Component Inventory & a11y Specs
+│       └── assets/             # Screen captures, flow diagrams & research artifacts
 ├── public/
+│   ├── preview/                # High-res design screenshots
 │   ├── .nojekyll               # Prevents GitHub Pages Jekyll asset ignoring
 │   ├── 404.html                # Single Page App routing fallback
 │   ├── favicon.svg
@@ -95,15 +124,18 @@ Pulse-HQ/
 │   │   ├── DashboardView.jsx   # Home Manager Dashboard screen
 │   │   ├── MeetingView.jsx     # Team & Meeting Hub screen (Purple Neon)
 │   │   └── SplashLoader.jsx    # Splash loading screen
+│   ├── services/
+│   │   └── apiService.js       # Client edge fallback engine (0ms latency)
 │   ├── App.jsx                 # Core routing, view switcher, and header
 │   ├── main.jsx                # React root entry point
 │   └── index.css               # Design system & dark glassmorphic styles
 ├── CHANGELOG.md                # Version release history
 ├── CONTRIBUTING.md             # Developer contribution guidelines
 ├── DEPLOYMENT.md               # CI/CD and hosting documentation
+├── DESIGN_JOURNEY.md           # Narrative Design Case Study
 ├── package.json
 ├── README.md
-└── vite.config.js              # Vite bundler configuration (base: '/Pulse-HQ/')
+└── vite.config.js              # Vite bundler configuration (base: './')
 ```
 
 ---
